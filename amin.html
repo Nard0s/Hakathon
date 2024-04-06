@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div id="loginSection">
+        <h1>Admin Login</h1>
+        <input type="password" id="adminPassword" placeholder="Enter admin password">
+        <button onclick="login()">Login</button>
+    </div>
+
+    <div id="userData" style="display:none;">
+        <h1>User Data</h1>
+        <div id="userDataContainer"></div>
+        <button onclick="logout()">Logout</button>
+        <button onclick="changePassword()">Change Password</button>
+        <button onclick="deleteUsers()">Delete All Users</button>
+    </div>
+
+    <script>
+        function login() {
+            const passwordInput = document.getElementById("adminPassword");
+            const password = passwordInput.value.trim();
+            const correctPassword = localStorage.getItem("adminPassword") || "admin123"; // Default admin password if not set
+
+            if (password === correctPassword) {
+                // Correct password, display user data and hide login section
+                const loginSection = document.getElementById("loginSection");
+                const userDataSection = document.getElementById("userData");
+                loginSection.style.display = "none";
+                userDataSection.style.display = "block";
+
+                // Display user data
+                displayUserData();
+            } else {
+                // Incorrect password, show error message
+                alert("Incorrect password. Please try again.");
+            }
+
+            // Clear password input field after login attempt
+            passwordInput.value = "";
+        }
+
+        function displayUserData() {
+            const userData = JSON.parse(localStorage.getItem("usersData")) || [];
+            const userDataContainer = document.getElementById("userDataContainer");
+            userDataContainer.innerHTML = "";
+
+            userData.forEach((user, index) => {
+                const userDiv = document.createElement("div");
+                userDiv.innerHTML = `
+                    <p><strong>Name:</strong> ${user.fullName}</p>
+                    <p><strong>ID:</strong> ${user.idNumber}</p>
+                    <p><strong>Email:</strong> ${user.emailAddress}</p>
+                    <p><strong>Password:</strong> ${user.userPassword}</p>
+                    <button onclick="deleteUser(${index})">Delete User</button>
+                    <hr>
+                `;
+                userDataContainer.appendChild(userDiv);
+            });
+        }
+
+        function logout() {
+            // Clear session and show login section
+            const loginSection = document.getElementById("loginSection");
+            const userDataSection = document.getElementById("userData");
+            loginSection.style.display = "block";
+            userDataSection.style.display = "none";
+        }
+
+        function changePassword() {
+            const newPassword = prompt("Enter new admin password:");
+            if (newPassword !== null && newPassword.trim() !== "") {
+                localStorage.setItem("adminPassword", newPassword.trim());
+                alert("Password changed successfully. Please login again with the new password.");
+                logout();
+            }
+        }
+
+        function deleteUser(index) {
+            const userData = JSON.parse(localStorage.getItem("usersData")) || [];
+            userData.splice(index, 1);
+            localStorage.setItem("usersData", JSON.stringify(userData));
+            displayUserData();
+            alert("User deleted successfully.");
+        }
+
+        function deleteUsers() {
+            if (confirm("Are you sure you want to delete all users?")) {
+                localStorage.removeItem("usersData");
+                const userDataContainer = document.getElementById("userDataContainer");
+                userDataContainer.innerHTML = "";
+                alert("All users deleted successfully.");
+            }
+        }
+    </script>
+</body>
+</html>

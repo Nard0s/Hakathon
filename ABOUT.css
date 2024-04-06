@@ -1,0 +1,51 @@
+#tech{
+    text-align: center;
+    
+}
+#cont{
+    margin-top: 15px;
+    height: 60em;
+    background: linear-gradient(to right, rgb(3, 36, 34), #74F0ED, #024346);
+    
+
+}
+.links{
+    text-align:end;
+    color: #030200;
+    height: 40px; 
+    padding-top: 20px;
+    font-size: 20px;
+    position: sticky ;
+    top:0px; 
+    
+}
+
+a{
+text-decoration: none;
+color: black;
+}
+.hom{
+    margin: 15px;
+    text-decoration: none;
+   
+}
+.reg{
+    margin: 15px;
+    text-decoration: none;
+   
+}
+.abo{
+    margin: 15px;
+    margin-right: 25px;
+    text-decoration: none;
+   
+} 
+h1{
+    color: #3197c7;
+}
+p{
+    color: #00060a;
+}
+h2{
+    color: #00a3ee;
+}
